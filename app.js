@@ -1,6 +1,7 @@
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import router from "./routes/routes.js";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
@@ -16,9 +17,7 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
+app.use("/", router);
 
 app.listen(PORT, (error) => {
   if (error) throw error;
