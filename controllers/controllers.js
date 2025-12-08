@@ -32,3 +32,15 @@ export async function createUser(req, res) {
 export function getLogInForm(req, res) {
   res.render("login");
 }
+
+export function getHomePage(req, res) {
+  res.render("home", { userObj: req.user });
+}
+
+export function userLogOut(req, res, next) {
+  req.logout((error) => {
+    if (error) return next(error);
+
+    res.redirect("/");
+  });
+}
