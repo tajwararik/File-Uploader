@@ -1,7 +1,9 @@
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import session from "express-session";
 import router from "./routes/routes.js";
+import passport from "./validator/passport.js";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
@@ -14,6 +16,16 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "keyboard-cat",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 
