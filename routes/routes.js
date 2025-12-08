@@ -7,12 +7,13 @@ import {
   getHomePage,
   userLogOut,
 } from "../controllers/controllers.js";
-import { userCreatePost } from "../validator/userValidator.js";
-import passport from "../validator/passport.js";
+import userCreatePost from "../middleware/userValidator.js";
+import passport from "../middleware/passport.js";
+import { isAuthenticated, isNotAuthenticated } from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/", getIndexPage);
+router.get("/", isNotAuthenticated, getIndexPage);
 router.get("/signup", getSignUpForm);
 router.post("/signup", userCreatePost, createUser);
 router.get("/login", getLogInForm);
@@ -23,7 +24,7 @@ router.post(
     failureRedirect: "/login",
   })
 );
-router.get("/home", getHomePage);
+router.get("/home", isAuthenticated, getHomePage);
 router.get("/logout", userLogOut);
 
 export default router;
