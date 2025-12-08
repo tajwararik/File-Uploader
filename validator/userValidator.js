@@ -29,13 +29,12 @@ const signupValidation = [
     .withMessage("Length should be at least 6"),
 ];
 
-export const userCreatePost = [
+const userCreatePost = [
   signupValidation,
   (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      console.log(errors.array());
       return res.status(400).render("signup", {
         title: "Sign up",
         errors: errors.array(),
@@ -47,3 +46,5 @@ export const userCreatePost = [
     next();
   },
 ];
+
+export default userCreatePost;
