@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import session from "express-session";
 import router from "./routes/routes.js";
-import passport from "./validator/passport.js";
+import passport from "./middleware/passport.js";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 3000;
