@@ -2,6 +2,8 @@ import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import session from "express-session";
+import { prisma } from "../lib/prisma";
+import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import router from "./routes/routes.js";
 import passport from "./middleware/passport.js";
 import "dotenv/config";
@@ -21,6 +23,11 @@ app.use(
     secret: process.env.SESSION_SECRET || "keyboard-cat",
     resave: false,
     saveUninitialized: false,
+    store: new PrismaSessionStore(prisma, {
+      checkPeriod: 2 * 60 * 1000,
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }),
   })
 );
 
