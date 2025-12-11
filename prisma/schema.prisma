@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
@@ -8,9 +8,10 @@ datasource db {
 }
 
 model Session {
-  id      String   @id
-  data    String
-  expires DateTime
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
 
   @@map("sessions")
 }
