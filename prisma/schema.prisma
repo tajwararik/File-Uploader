@@ -7,6 +7,14 @@ datasource db {
   provider = "postgresql"
 }
 
+model Session {
+  id      String   @id
+  data    String
+  expires DateTime
+
+  @@map("sessions")
+}
+
 model User {
   id        Int    @id @default(autoincrement())
   email     String @unique
