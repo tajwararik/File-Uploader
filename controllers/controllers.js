@@ -44,3 +44,32 @@ export function userLogOut(req, res, next) {
     res.redirect("/");
   });
 }
+
+export function getFileUploadPage(req, res) {
+  res.render("upload-file");
+}
+
+export async function uploadFile(req, res) {
+  const { filename, size, path, mimetype } = req.file;
+  const userId = req.user.id;
+
+  try {
+    await prisma.file.create({
+      data: {
+        fileName: filename,
+        size,
+        path,
+        mimetype,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+    res.redirect("/home");
+  } catch (error) {
+    console.log(error);
+    res.render("upload-file");
+  }
+}
