@@ -33,8 +33,17 @@ export function getLogInForm(req, res) {
   res.render("login");
 }
 
-export function getHomePage(req, res) {
-  res.render("home", { userObj: req.user });
+export async function getHomePage(req, res) {
+  try {
+    const files = await prisma.file.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    });
+    res.render("home", { userObj: req.user, userFiles: files });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export function userLogOut(req, res, next) {
