@@ -33,6 +33,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", router);
@@ -40,5 +41,5 @@ app.use("/", router);
 app.listen(PORT, (error) => {
   if (error) throw error;
 
-  console.log(`Connected on post: ${PORT}`);
+  console.log(`Connected on port: ${PORT}`);
 });
