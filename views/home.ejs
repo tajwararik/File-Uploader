@@ -27,7 +27,10 @@
       <ol>
         <% userFiles.forEach(file => { %>
         <li>
-          <a href="/<%= file.path %>" target="_blank"><%= file.fileName %></a>
+          <p><%= file.fileName %></p>
+          <p>Size: <%= (file.size / 1024 ** 2).toFixed(2) %> MB</p>
+          <p>Created at: <%= file.formattedDate %></p>
+          <a href="/<%= file.path %>" target="_blank">Download</a>
         </li>
         <% }) %>
       </ol>
