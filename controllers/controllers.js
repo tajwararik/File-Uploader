@@ -40,7 +40,22 @@ export async function getHomePage(req, res) {
         userId: req.user.id,
       },
     });
-    res.render("home", { userObj: req.user, userFiles: files });
+
+    const userFiles = files.map((file) => ({
+      ...files,
+      formattedDate: file.createdAt.toLocaleString("en-GB", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    }));
+
+    res.render("home", {
+      userObj: req.user,
+      userFiles,
+    });
   } catch (error) {
     console.log(error);
   }
