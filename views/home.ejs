@@ -20,5 +20,17 @@
         <a href="upload-file">Upload</a> a new file.
       </p>
     </section>
+
+    <section class="files">
+      <h4>Your files</h4>
+
+      <ol>
+        <% userFiles.forEach(file => { %>
+        <li>
+          <a href="/<%= file.path %>" target="_blank"><%= file.fileName %></a>
+        </li>
+        <% }) %>
+      </ol>
+    </section>
   </body>
 </html>
