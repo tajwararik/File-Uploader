@@ -15,9 +15,10 @@
     </header>
 
     <section>
+      <p>Hello, <%= `${userObj.firstName} ${userObj.lastName}` %>!</p>
       <p>
-        Hello, <%= `${userObj.firstName} ${userObj.lastName}` %>!
-        <a href="upload-file">Upload</a> a new file.
+        <a href="upload-file">Upload</a> new file or
+        <a href="create-folder">create</a> folder.
       </p>
     </section>
 
@@ -28,8 +29,10 @@
         <% userFiles.forEach(file => { %>
         <li>
           <p><%= file.fileName %></p>
-          <p>Size: <%= (file.size / 1024 ** 2).toFixed(2) %> MB</p>
-          <p>Created at: <%= file.formattedDate %></p>
+          <p>
+            <strong>Size</strong>: <%= (file.size / 1024 ** 2).toFixed(2) %> MB
+          </p>
+          <p><strong>Created at</strong>: <%= file.formattedDate %></p>
           <a href="/<%= file.path %>" target="_blank">Download</a>
         </li>
         <% }) %>
