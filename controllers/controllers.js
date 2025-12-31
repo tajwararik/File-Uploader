@@ -42,7 +42,7 @@ export async function getHomePage(req, res) {
     });
 
     const userFiles = files.map((file) => ({
-      ...files,
+      ...file,
       formattedDate: file.createdAt.toLocaleString("en-GB", {
         year: "numeric",
         month: "short",
@@ -95,5 +95,32 @@ export async function uploadFile(req, res) {
   } catch (error) {
     console.log(error);
     res.render("upload-file");
+  }
+}
+
+export function getCreateFolderPage(req, res) {
+  res.render("create-folder");
+}
+
+export async function createFolder(req, res) {
+  const { folderName } = req.body;
+  const userId = req.user.id;
+
+  try {
+    await prisma.folder.create({
+      data: {
+        name: folderName,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    res.redirect("/home");
+  } catch (error) {
+    console.log(error);
+    res.render("create-folder");
   }
 }

@@ -8,6 +8,8 @@ import {
   userLogOut,
   getFileUploadPage,
   uploadFile,
+  getCreateFolderPage,
+  createFolder,
 } from "../controllers/controllers.js";
 import userCreatePost from "../middleware/userValidator.js";
 import passport from "../middleware/passport.js";
@@ -31,5 +33,7 @@ router.get("/home", isAuthenticated, getHomePage);
 router.get("/logout", userLogOut);
 router.get("/upload-file", isAuthenticated, getFileUploadPage);
 router.post("/upload-file", upload.single("file-input"), uploadFile);
+router.get("/create-folder", isAuthenticated, getCreateFolderPage);
+router.post("/create-folder", createFolder);
 
 export default router;
