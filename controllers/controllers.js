@@ -41,6 +41,12 @@ export async function getHomePage(req, res) {
       },
     });
 
+    const folders = await prisma.folder.findMany({
+      where: {
+        userId: req.user.id,
+      },
+    });
+
     const userFiles = files.map((file) => ({
       ...file,
       formattedDate: file.createdAt.toLocaleString("en-GB", {
@@ -55,6 +61,7 @@ export async function getHomePage(req, res) {
     res.render("home", {
       userObj: req.user,
       userFiles,
+      userFolders: folders,
     });
   } catch (error) {
     console.log(error);
@@ -122,5 +129,51 @@ export async function createFolder(req, res) {
   } catch (error) {
     console.log(error);
     res.render("create-folder");
+  }
+}
+
+export async function expandFolder(req, res) {
+  const folderId = req.params.id;
+
+  const folder = await prisma.folder.findMany({
+    where: {
+      id: Number(folderId),
+      userId: req.user.id,
+    },
+    include: {
+      files: true,
+    },
+  });
+  res.render("filesInFolder", { folder });
+}
+
+export async function deleteFile(req, res) {
+  const { id } = req.params;
+
+  try {
+    await prisma.file.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    res.redirect("/home");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deleteFolder(req, res) {
+  const { id } = req.params;
+  try {
+    await prisma.folder.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    res.redirect("/home");
+  } catch (error) {
+    console.log(error);
   }
 }
