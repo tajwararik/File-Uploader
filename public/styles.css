@@ -53,18 +53,22 @@ form > label[for="file-input"] {
   align-self: flex-start;
 }
 
-.files {
+.delete {
+  width: fit-content;
+  font: inherit;
+  text-decoration: underline;
+  color: #0000ff;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.files,
+.folders {
   margin: 15px;
 }
 
-.files li {
-  padding: 5px;
-}
-
-.files {
-  margin: 15px;
-}
-
-.files li {
+.files li,
+.folders li {
   padding: 5px;
 }
