@@ -10,6 +10,9 @@ import {
   uploadFile,
   getCreateFolderPage,
   createFolder,
+  expandFolder,
+  deleteFile,
+  deleteFolder,
 } from "../controllers/controllers.js";
 import userCreatePost from "../middleware/userValidator.js";
 import passport from "../middleware/passport.js";
@@ -35,5 +38,9 @@ router.get("/upload-file", isAuthenticated, getFileUploadPage);
 router.post("/upload-file", upload.single("file-input"), uploadFile);
 router.get("/create-folder", isAuthenticated, getCreateFolderPage);
 router.post("/create-folder", createFolder);
+router.get("/folders/:id", isAuthenticated, expandFolder);
+router.get("/folders/:id/upload-file", isAuthenticated, getFileUploadPage);
+router.post("/folder/:id/delete", deleteFolder);
+router.post("/file/:id/delete", deleteFile);
 
 export default router;
