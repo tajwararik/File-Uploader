@@ -7,13 +7,15 @@
   </head>
 
   <body>
+    <header>
+      <h1>Secret club</h1>
+      <div>
+        <a href="/">Back</a>
+      </div>
+    </header>
+
     <form action="/create-folder" method="POST">
-      <input
-        type="text"
-        name="folderName"
-        placeholder="Folder name"
-        required
-      />
+      <input type="text" name="folderName" placeholder="Folder name" required />
       <button type="submit">Create</button>
     </form>
   </body>
