@@ -14,12 +14,44 @@
       </div>
     </header>
 
-    <% folder.forEach(folder => { %>
     <section>
       <p>
         <a href="/folders/<%= folder.id %>/upload-file">Upload</a> new file.
       </p>
     </section>
-    <% }) %>
+
+    <section class="files">
+<h4>Your files</h4>
+
+      <% if(!files.length) { %>
+      <p>You don't have any file.</p>
+      <% } %>
+      
+      <ol>
+        <% files.forEach(file => { %>
+        <li>
+          <p><%= file.fileName %></p>
+          <p>
+            <strong>Size</strong>: <%= (file.size / 1024 ** 2).toFixed(2) %> MB
+          </p>
+          <p><strong>Created at</strong>: <%= file.formattedDate %></p>
+          <a href="/<%= file.path %>" target="_blank">Download</a> |
+          <form
+            action="/file/<%= file.id %>/delete"
+            method="post"
+            style="display: inline; padding: 0"
+          >
+            <button
+              type="submit"
+              class="delete"
+              onclick="return confirm('Do you want to delete <%= file.fileName%>?')"
+            >
+              Delete
+            </button>
+          </form>
+        </li>
+          <% }) %>
+        </ol>
+      </section>
   </body>
 </html>
