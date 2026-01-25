@@ -7,6 +7,7 @@ import {
   getHomePage,
   userLogOut,
   getFileUploadPage,
+  getFileUploadFromFolder,
   uploadFile,
   getCreateFolderPage,
   createFolder,
@@ -30,7 +31,7 @@ router.post(
   passport.authenticate("local", {
     successRedirect: "/home",
     failureRedirect: "/login",
-  })
+  }),
 );
 router.get("/home", isAuthenticated, getHomePage);
 router.get("/logout", userLogOut);
@@ -39,7 +40,16 @@ router.post("/upload-file", upload.single("file-input"), uploadFile);
 router.get("/create-folder", isAuthenticated, getCreateFolderPage);
 router.post("/create-folder", createFolder);
 router.get("/folders/:id", isAuthenticated, expandFolder);
-router.get("/folders/:id/upload-file", isAuthenticated, getFileUploadPage);
+router.get(
+  "/folders/:id/upload-file",
+  isAuthenticated,
+  getFileUploadFromFolder,
+);
+router.post(
+  "/folders/:id/upload-file",
+  upload.single("file-input"),
+  uploadFile,
+);
 router.post("/folder/:id/delete", deleteFolder);
 router.post("/file/:id/delete", deleteFile);
 
