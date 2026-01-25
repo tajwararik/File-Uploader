@@ -77,32 +77,47 @@ export function userLogOut(req, res, next) {
 }
 
 export function getFileUploadPage(req, res) {
-  res.render("upload-file");
+  res.render("upload-file", { folder: null });
+}
+
+export async function getFileUploadFromFolder(req, res) {
+  const folderId = req.params.id;
+
+  const folder = await prisma.folder.findFirst({
+    where: {
+      id: Number(folderId),
+      userId: req.user.id,
+    },
+  });
+  res.render("upload-file", { folder });
 }
 
 export async function uploadFile(req, res) {
   const { filename, size, path, mimetype } = req.file;
   const userId = req.user.id;
+  const folderId = req.params.id ?? null;
 
-  try {
-    await prisma.file.create({
-      data: {
-        fileName: filename,
-        size,
-        path,
-        mimetype,
-        user: {
-          connect: {
-            id: userId,
-          },
-        },
+  const data = {
+    fileName: filename,
+    size,
+    path,
+    mimetype,
+    user: {
+      connect: {
+        id: userId,
       },
-    });
-    res.redirect("/home");
-  } catch (error) {
-    console.log(error);
-    res.render("upload-file");
-  }
+    },
+  };
+
+  if (folderId)
+    data.folder = {
+      connect: {
+        id: Number(folderId),
+      },
+    };
+
+  await prisma.file.create({ data });
+  res.redirect(folderId ? `/folders/${folderId}` : "/home");
 }
 
 export function getCreateFolderPage(req, res) {
@@ -135,25 +150,42 @@ export async function createFolder(req, res) {
 export async function expandFolder(req, res) {
   const folderId = req.params.id;
 
-  const folder = await prisma.folder.findMany({
-    where: {
-      id: Number(folderId),
-      userId: req.user.id,
-    },
-    include: {
-      files: true,
-    },
-  });
-  res.render("filesInFolder", { folder });
+  try {
+    const folder = await prisma.folder.findFirst({
+      where: {
+        id: Number(folderId),
+        userId: req.user.id,
+      },
+      include: {
+        files: true,
+      },
+    });
+
+    const files = folder.files.map((file) => ({
+      ...file,
+      formattedDate: file.createdAt.toLocaleString("en-GB", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    }));
+
+    res.render("filesInFolder", { folder, files });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function deleteFile(req, res) {
   const { id } = req.params;
 
   try {
-    await prisma.file.delete({
+    await prisma.file.deleteMany({
       where: {
         id: Number(id),
+        userId: req.user.id,
       },
     });
 
@@ -166,9 +198,10 @@ export async function deleteFile(req, res) {
 export async function deleteFolder(req, res) {
   const { id } = req.params;
   try {
-    await prisma.folder.delete({
+    await prisma.folder.deleteMany({
       where: {
         id: Number(id),
+        userId: req.user.id,
       },
     });
 
