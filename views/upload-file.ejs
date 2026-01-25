@@ -14,7 +14,11 @@
       </div>
     </header>
 
-    <form action="/upload-file" method="POST" enctype="multipart/form-data">
+    <form
+      action="<% folder ? `/folders/${folder.id}/upload-file` : '/upload-file' %>"
+      method="POST"
+      enctype="multipart/form-data"
+    >
       <label for="file-input">Upload file:</label>
       <input type="file" id="file-input" name="file-input" required />
       <button type="submit">Submit</button>
