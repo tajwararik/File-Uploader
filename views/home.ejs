@@ -46,7 +46,7 @@
             <button
               type="submit"
               class="delete"
-              onclick="confirm('Do you want to delete <%= file.fileName%>?')"
+              onclick="return confirm('Do you want to delete <%= file.fileName%>?')"
             >
               Delete
             </button>
@@ -75,7 +75,7 @@
             <button
               type="submit"
               class="delete"
-              onclick="confirm('Do you want to delete <%= folder.name%>?')"
+              onclick="return confirm('Do you want to delete <%= folder.name%>?')"
             >
               Delete
             </button>
